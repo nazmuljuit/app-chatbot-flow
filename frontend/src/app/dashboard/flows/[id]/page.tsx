@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect } from "react";
-import { useFlowStore } from "@/store/flowStore";
-import FlowCanvas from "@/components/flow/FlowCanvas";
-import NodePanel from "@/components/flow/NodePanel";
+import { useFlowStore } from "@/src/store/flowStore";
+import FlowCanvas from "@/src/components/flow/FlowCanvas";
+import NodePanel from "@/src/components/flow/NodePanel";
 
 export default function FlowBuilderPage() {
   const { setNodes } = useFlowStore();
