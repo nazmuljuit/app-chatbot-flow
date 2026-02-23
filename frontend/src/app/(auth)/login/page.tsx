@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import API from "@/src/services/api";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -16,29 +17,37 @@ export default function LoginPage() {
     setError("");
 
     try {
-      const res = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
+      // FIXED: Using axios correctly - POST request with data object
+      const response = await API.post("/auth/login", {
+        email: email,
+        password: password
       });
 
-      const data = await res.json();
+      // Axios automatically parses JSON, response.data contains the parsed data
+      const data = response.data;
 
-      if (!res.ok) {
-        throw new Error(data.error || "Login failed");
-      }
-
+      // Check if login was successful (axios throws on non-2xx status codes automatically)
       localStorage.setItem("token", data.token);
 
       // Use replace instead of push to prevent history stack issues
       router.replace("/dashboard/flows/1");
       
-      // Or use window.location as a fallback
-      // window.location.href = "/dashboard/flows/1";
     } catch (err: any) {
-      setError(err.message);
+      console.error("Login error:", err);
+      
+      // Handle axios error response
+      if (err.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        setError(err.response.data.error || err.response.data.message || "Login failed");
+      } else if (err.request) {
+        // The request was made but no response was received
+        setError("No response from server. Please check if backend is running.");
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        setError(err.message || "An unexpected error occurred");
+      }
+      
       setLoading(false); // Only set loading false on error
     }
     

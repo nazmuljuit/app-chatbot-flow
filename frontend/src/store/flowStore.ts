@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { FlowNode, FlowEdge } from "@/types/flow";
+import { FlowNode, FlowEdge } from "@/src/types/flow";
 
 interface FlowState {
   nodes: FlowNode[];
