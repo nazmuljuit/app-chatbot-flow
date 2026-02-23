@@ -12,7 +12,7 @@ import ReactFlow, {
 } from "reactflow";
 import "reactflow/dist/style.css";
 import { useCallback, useRef } from "react";
-import { useFlowStore } from "@src/store/flowStore";
+import { useFlowStore } from "@/src/store/flowStore";
 import StartNode from "./nodes/StartNode";
 import MessageNode from "./nodes/MessageNode";
 import EndNode from "./nodes/EndNode";
